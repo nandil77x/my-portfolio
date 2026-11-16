@@ -645,3 +645,32 @@ a { color: inherit; }
   }
 })();
 </script>
+
+/* ---- Permanent Profile Photo ---- */
+
+var photo = document.getElementById('photo');
+var photoImg = document.getElementById('photoImg');
+var menuImg = document.getElementById('menuImg');
+var menuArt = document.getElementById('menuArt');
+
+// Your permanent profile photo
+var PROFILE_PHOTO = 'img/me.png';
+
+var profileImage = new Image();
+
+profileImage.onload = function () {
+  photoImg.src = PROFILE_PHOTO;
+  menuImg.src = PROFILE_PHOTO;
+
+  // Always display as a transparent cutout
+  photo.classList.remove('arch');
+  photo.classList.add('has');
+
+  menuArt.classList.add('cutout');
+};
+
+profileImage.onerror = function () {
+  console.error('Profile photo not found:', PROFILE_PHOTO);
+};
+
+profileImage.src = PROFILE_PHOTO;
