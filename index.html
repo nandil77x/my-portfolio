@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Nandil Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5,10 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
 <style>
   .certs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 16px; }
-.cert { display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--white); }
-.cert img { width: 100%; aspect-ratio: 1.41 / 1; object-fit: contain; background: var(--mid-deep); border: 1.5px solid var(--white); border-radius: 16px; transition: transform .3s ease; }
-.cert:hover img { transform: translateY(-6px); }
-.cert span { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  .cert { display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--white); }
+  .cert img { width: 100%; aspect-ratio: 1.41 / 1; object-fit: contain; background: var(--mid-deep); border: 1.5px solid var(--white); border-radius: 16px; transition: transform .3s ease; }
+  .cert:hover img { transform: translateY(-6px); }
+  .cert span { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+
 /* Layout: a film-style intro, then a white paper hero card on a midnight page, a full-screen menu with letter-roll links, and midnight image sections below. Three colours only: midnight blue, white, coral. */
 :root {
   --mid: #0B1438;
@@ -31,8 +37,9 @@ body {
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   font-family: var(--mono);
   overflow-x: hidden;
+  margin: 0;
 }
-body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--mid) url(img/img:bg.jpg) center / cover no-repeat; }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--mid) url(img/bg.jpg) center / cover no-repeat; }
 button { font: inherit; cursor: pointer; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
@@ -78,9 +85,8 @@ a { color: inherit; }
 .menu li { position: relative; padding-left: .52em; line-height: 1.05; display: flex; }
 .menu li .dot { position: absolute; left: 0; top: 50%; width: .24em; height: .24em; margin-top: -.12em; border-radius: 50%; background: var(--coral); transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); }
 .menu li[data-current="true"] .dot { transform: scale(1); }
-.menu a { text-decoration: none; display: inline-flex; line-height: 1.05; color: var(--white); }
+.menu a { text-decoration: none; display: inline-flex; line-height: 1.05; color: var(--white); transition: opacity .3s; }
 .menu ul:has(a:hover) a:not(:hover) { opacity: .35; }
-.menu a { transition: opacity .3s; }
 .menu-art { position: relative; height: min(70vh, 620px); aspect-ratio: 3 / 4; justify-self: center; max-width: 100%; }
 .menu-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
 .menu-art.cutout img { object-fit: contain; object-position: center bottom; border-radius: 0; }
@@ -124,23 +130,13 @@ a { color: inherit; }
 .caret { display: inline-block; width: .08em; height: .95em; background: var(--mid); margin-left: 3px; vertical-align: -.1em; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-.photo { position: absolute; z-index: 2; left: 50%; bottom: 0; transform: translateX(-50%); height: 80%; aspect-ratio: 3 / 4; max-width: 44%; display: block; cursor: pointer; }
-.photo:focus-within { outline: 3px solid var(--coral); outline-offset: 3px; }
-.photo input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.photo .slot {
-  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 10px;
-  border: 2px dashed var(--mid); border-bottom: 0; border-radius: 999px 999px 0 0;
-  background: linear-gradient(180deg, rgba(11, 20, 56, .04), rgba(11, 20, 56, .16));
-  padding: 0 12px 22px; text-align: center;
-}
-.photo .slot svg { width: 56%; height: auto; flex: none; }
-.photo .slot span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--mid); }
-.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: none; }
-.photo.has .slot { display: none; }
-.photo.has img { display: block; }
-/* a normal photo with its own background is framed as an arch so it looks designed */
+/* Permanent portrait cutout */
+.photo { position: absolute; z-index: 2; left: 50%; bottom: 0; transform: translateX(-50%); height: 84%; aspect-ratio: 3 / 4; max-width: 44%; display: block; pointer-events: none; }
+.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: block; filter: drop-shadow(0 18px 28px rgba(11, 20, 56, .25)); }
+.photo:not(.has) { display: none; }
+/* Fallback arch frame if opened without transparent cutout */
 .photo.arch { z-index: 0; height: 74%; }
-.photo.arch img { object-fit: cover; object-position: center top; border-radius: 999px 999px 0 0; border: 3px solid var(--mid); border-bottom: 0; box-shadow: 14px -14px 0 var(--coral); }
+.photo.arch img { object-fit: cover; object-position: center top; border-radius: 999px 999px 0 0; border: 3px solid var(--mid); border-bottom: 0; box-shadow: 14px -14px 0 var(--coral); filter: none; }
 
 .scribble { position: absolute; z-index: 3; height: 72%; aspect-ratio: 60 / 500; bottom: 4%; pointer-events: none; }
 .scribble.l { left: 33%; }
@@ -165,7 +161,7 @@ a { color: inherit; }
   .w, .namebox, .who, .photo { position: static; }
   .w { font-size: clamp(88px, 27vw, 170px); }
   .hello { order: 1; }
-  .photo { order: 2; align-self: center; width: min(78%, 330px); height: auto; max-width: none; transform: none; margin: -8px 0 -14px; }
+  .photo { order: 2; align-self: center; width: min(78%, 330px); height: 380px; max-width: none; transform: none; margin: -8px 0 -14px; position: relative; }
   #hero[data-play] .photo { animation-name: riseM; }
   @keyframes riseM { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: none; } }
   .im { order: 3; }
@@ -267,6 +263,8 @@ a { color: inherit; }
   .menu { clip-path: none; }
 }
 </style>
+</head>
+<body>
 
 <div id="intro" aria-label="Opening sequence">
   <div class="scene open grain on">
@@ -300,7 +298,7 @@ a { color: inherit; }
     <li data-sec="projects"><i class="dot"></i><a class="rolls" href="#projects"><span class="rl" data-text="Projects"></span></a></li>
     <li data-sec="cv"><i class="dot"></i><a class="rolls" href="#cv"><span class="rl" data-text="CV"></span></a></li>
   </ul>
-  <div class="menu-art" id="menuArt"><img id="menuImg" src="img/lens.jpg" alt=""></div>
+  <div class="menu-art" id="menuArt"><img id="menuImg" src="img/lens.jpg" alt="Portrait of Nandil"></div>
   <div class="menu-foot"><span>Film editor / Security student</span><span>Handmade by Nandil</span></div>
 </nav>
 
@@ -312,336 +310,4 @@ a { color: inherit; }
       <span class="w hello pop" style="--d:.05s">Hello</span>
       <span class="w im pop" style="--d:.2s">I&rsquo;m</span>
       <span class="namebox">
-        <span class="tag pop" style="--d:.45s">CS student / Security / Film editor</span>
-        <span class="w name pop" style="--d:.3s">Nandil</span>
-      </span>
-    </h1>
-
-    <svg class="scribble l" viewBox="0 0 60 500" preserveAspectRatio="none" aria-hidden="true">
-      <path pathLength="1" d="M30 0 C6 70 52 150 24 230 S40 390 16 498"/>
-      <path pathLength="1" d="M50 40 C28 110 58 190 42 270 S52 400 36 470"/>
-    </svg>
-    <svg class="scribble r" viewBox="0 0 60 500" preserveAspectRatio="none" aria-hidden="true">
-      <path pathLength="1" d="M30 20 C8 90 54 170 26 250 S42 400 20 494"/>
-      <path pathLength="1" d="M52 60 C30 130 56 210 44 290 S50 410 38 480"/>
-    </svg>
-
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <defs>
-        <symbol id="flower" viewBox="-12 -12 24 24">
-          <g fill="#FF4B3A">
-            <path d="M0 -11 C5 -11 5 -3 0 0 C-5 -3 -5 -11 0 -11Z"/>
-            <path d="M0 -11 C5 -11 5 -3 0 0 C-5 -3 -5 -11 0 -11Z" transform="rotate(72)"/>
-            <path d="M0 -11 C5 -11 5 -3 0 0 C-5 -3 -5 -11 0 -11Z" transform="rotate(144)"/>
-            <path d="M0 -11 C5 -11 5 -3 0 0 C-5 -3 -5 -11 0 -11Z" transform="rotate(216)"/>
-            <path d="M0 -11 C5 -11 5 -3 0 0 C-5 -3 -5 -11 0 -11Z" transform="rotate(288)"/>
-          </g>
-          <circle r="2" fill="#0B1438"/>
-        </symbol>
-      </defs>
-    </svg>
-    <svg class="flower f1" aria-hidden="true"><use href="#flower"/></svg>
-    <svg class="flower f2" aria-hidden="true"><use href="#flower"/></svg>
-    <svg class="flower f3" aria-hidden="true"><use href="#flower"/></svg>
-
-    <label class="photo" id="photo" for="photoInput">
-      <input id="photoInput" type="file" accept="image/*">
-      <span class="slot">
-        <svg viewBox="0 0 120 150" aria-hidden="true">
-          <circle cx="60" cy="48" r="26" fill="#0B1438" opacity=".5"/>
-          <path d="M8 150 C8 100 36 86 60 86 C84 86 112 100 112 150Z" fill="#0B1438" opacity=".5"/>
-        </svg>
-        <span>Add your cut-out photo</span>
-      </span>
-      <img id="photoImg" alt="Portrait of Nandil">
-    </label>
-
-    <div class="who pop" style="--d:.4s">
-      <small>$ whoami</small>
-      <div class="role"><b>&gt;</b> <span id="role">film editor</span><i class="caret"></i></div>
-    </div>
-  </section>
-</main>
-
-<section class="sec" id="skills" aria-labelledby="h-skills">
-  <div class="sec-head"><h2 id="h-skills">Skills<i>.</i></h2><p>Two crafts that feed each other: breaking and securing systems, and cutting picture and sound.</p></div>
-  <div class="panels">
-    <article class="panel" style="background-image:url(img/cyber.jpg)">
-      <h3>Security</h3>
-      <p>Hands-on practice on lab platforms, with Python as the first language.</p>
-      <ul class="chips"><li class="hot">Python</li><li>TryHackMe</li><li>Hack The Box</li><li>CTF labs</li></ul>
-    </article>
-    <article class="panel" style="background-image:url(img/edit.jpg)">
-      <h3>Editing</h3>
-      <p>Film, events, social, anything that needs a cut and a story.</p>
-      <ul class="chips"><li class="hot">After Effects</li><li>Film editing</li><li>Cinematography</li><li>Any video, any format</li></ul>
-    </article>
-  </div>
-</section>
-
-<section class="sec" id="certificates" aria-labelledby="h-certs">
-  <div class="sec-head"><h2 id="h-certs">Certificates<i>.</i></h2><p>The credentials I am working toward. Earned ones will be listed here with the date and a verify link.</p></div>
-  <div class="panels">
-    <article class="panel" style="background-image:url(img/code.jpg)">
-      <span class="tagpill">Target</span>
-      <h3>eJPT</h3>
-      <p>Entry-level, hands-on penetration testing certificate.</p>
-    </article>
-    <article class="panel" style="background-image:url(img/passion.jpg)">
-      <span class="tagpill">Target</span>
-      <h3>OSCP</h3>
-      <p>The practical penetration testing exam, planned after the fundamentals.</p>
-    </article>
-  </div>
-</section>
-
-<section class="sec" id="hackathons" aria-labelledby="h-hack">
-  <div class="sec-head"><h2 id="h-hack">Hackathons<i>.</i></h2><p>Events, teams and what got built in a weekend.</p></div>
-  <div class="slot-card">
-    <h3>Add your first hackathon</h3>
-    <p>For each one: event name and date, your team, what you built, and the result. Send me those and this card becomes a row.</p>
-  </div>
-</section>
-
-<section class="sec" id="projects" aria-labelledby="h-proj">
-  <div class="sec-head"><h2 id="h-proj">Projects<i>.</i></h2><p>Security projects, tools, and edits worth showing.</p></div>
-  <div class="slot-card">
-    <h3>Add your best project</h3>
-    <p>For each one: name, one line on what it does, the tools you used, and a link or a reel. Three strong projects beat ten weak ones.</p>
-  </div>
-</section>
-
-<section class="sec" id="cv" aria-labelledby="h-cv">
-  <div class="sec-head"><h2 id="h-cv">CV<i>.</i></h2><p>The short version.</p></div>
-  <div class="cv-grid">
-    <div class="cv-card">
-      <dl>
-        <div><dt>Studying</dt><dd>Computer Science engineering</dd></div>
-        <div><dt>Focus</dt><dd>Cybersecurity</dd></div>
-        <div><dt>Also</dt><dd>Film editor</dd></div>
-        <div><dt>Tools</dt><dd>Python, After Effects</dd></div>
-      </dl>
-    </div>
-    <div class="slot-card">
-      <h3>Link your CV here</h3>
-      <p>Upload your CV as a PDF to Google Drive or similar and send me the share link. The button will open it in a new tab.</p>
-    </div>
-  </div>
-</section>
-
-<footer class="foot">
-  <span>Handmade by Nandil</span>
-  <button type="button" id="replay">&#8635; Replay intro</button>
-</footer>
-
-<script>
-(function () {
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // warm the image cache so the fast cuts never show an empty frame
-  ['bg', 'cyber', 'edit', 'code', 'story', 'passion', 'lens', 'paper'].forEach(function (n) { new Image().src = 'img/' + n + '.jpg'; });
-
-  /* ---- letter roll ---- */
-  function roll(el, text) {
-    el.textContent = '';
-    el.setAttribute('aria-label', text);
-    Array.prototype.forEach.call(text, function (c, i) {
-      var s = document.createElement('span');
-      s.className = 'ch'; s.setAttribute('aria-hidden', 'true');
-      s.setAttribute('data-c', c); s.style.setProperty('--i', i);
-      s.textContent = c === ' ' ? ' ' : c;
-      el.appendChild(s);
-    });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('.menu .rl'), function (el) { roll(el, el.getAttribute('data-text')); });
-  var menuLabel = document.getElementById('menuLabel');
-  roll(menuLabel, 'Menu');
-
-  /* ---- menu ---- */
-  var btn = document.getElementById('menuBtn');
-  var menu = document.getElementById('menu');
-  function setMenu(open) {
-    menu.classList.toggle('open', open);
-    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    roll(menuLabel, open ? 'Close' : 'Menu');
-    document.body.style.overflow = open ? 'hidden' : '';
-    if (open) { var a = menu.querySelector('a'); if (a) setTimeout(function () { a.focus({ preventScroll: true }); }, 400); }
-  }
-  btn.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); btn.focus(); } });
-
-  /* ---- navigation ---- */
-  var names = ['home', 'skills', 'certificates', 'hackathons', 'projects', 'cv'];
-  function target(name) { return name === 'home' ? document.getElementById('hero') : document.getElementById(name); }
-  function go(name, instant) {
-    var el = target(name); if (!el) return;
-    var top = name === 'home' ? 0 : el.getBoundingClientRect().top + window.pageYOffset - 8;
-    window.scrollTo({ top: top, behavior: (reduce || instant) ? 'auto' : 'smooth' });
-  }
-  Array.prototype.forEach.call(menu.querySelectorAll('a'), function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      var name = a.getAttribute('href').slice(1);
-      try { history.replaceState(null, '', '#' + name); } catch (err) { location.hash = name; }
-      setMenu(false);
-      setTimeout(function () { go(name); }, 120);
-    });
-  });
-  window.addEventListener('hashchange', function () { var n = location.hash.slice(1); if (names.indexOf(n) > -1) go(n); });
-
-  /* ---- current section dot ---- */
-  var items = {};
-  Array.prototype.forEach.call(menu.querySelectorAll('li'), function (li) { items[li.getAttribute('data-sec')] = li; });
-  function mark(name) { Object.keys(items).forEach(function (k) { items[k].setAttribute('data-current', k === name ? 'true' : 'false'); }); }
-  mark('home');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { if (en.isIntersecting) mark(en.target.id === 'hero' ? 'home' : en.target.id); });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    names.forEach(function (n) { var el = target(n); if (el) io.observe(el); });
-  }
-
-  /* ---- intro ---- */
-  var intro = document.getElementById('intro');
-  var hero = document.getElementById('hero');
-  var openScene = intro.querySelector('.open');
-  var cuts = Array.prototype.slice.call(intro.querySelectorAll('.cut'));
-  var line = intro.querySelector('.line');
-  var tcEl = document.getElementById('tc');
-  var roleEl = document.getElementById('role');
-
-  // To use your own photos for the five cuts, set e.g. { cyber: 'img/my-cyber.jpg' } after adding the files.
-  var CUT_IMAGES = {};
-  cuts.forEach(function (c) {
-    var src = CUT_IMAGES[c.getAttribute('data-word')];
-    if (src) { var art = c.querySelector('.art'); art.className = 'art'; art.style.backgroundImage = 'url("' + src + '")'; }
-  });
-
-  var timers = [], raf = 0, t0 = 0, running = false, typer = 0;
-  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
-  function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function tick() {
-    var s = (performance.now() - t0) / 1000;
-    tcEl.textContent = '00:00:' + pad(Math.floor(s)) + ':' + pad(Math.floor((s % 1) * 24));
-    raf = requestAnimationFrame(tick);
-  }
-
-  var roles = ['film editor', 'edits anything', 'cinematographer', 'security student', 'builder'];
-  var ri = 0, ci = 0, del = false;
-  function type() {
-    clearTimeout(typer);
-    var w = roles[ri];
-    if (!del) {
-      ci++; roleEl.textContent = w.slice(0, ci);
-      if (ci === w.length) { del = true; typer = setTimeout(type, 1500); return; }
-      typer = setTimeout(type, 85);
-    } else {
-      ci--; roleEl.textContent = w.slice(0, ci);
-      if (ci === 0) { del = false; ri = (ri + 1) % roles.length; typer = setTimeout(type, 250); return; }
-      typer = setTimeout(type, 40);
-    }
-  }
-  function startHero() {
-    hero.removeAttribute('data-play');
-    void hero.offsetWidth;
-    hero.setAttribute('data-play', '');
-    clearTimeout(typer);
-    if (reduce) { roleEl.textContent = roles[0]; return; }
-    ri = 0; ci = 0; del = false; roleEl.textContent = '';
-    typer = setTimeout(type, 700);
-  }
-  function finish() {
-    if (!running) return;
-    running = false;
-    timers.forEach(clearTimeout); timers = [];
-    cancelAnimationFrame(raf);
-    intro.classList.add('out');
-    startHero();
-    setTimeout(function () { intro.hidden = true; }, 520);
-    try { sessionStorage.setItem('nandil-intro', '1'); } catch (e) {}
-  }
-  function run() {
-    if (running) return;
-    running = true;
-    window.scrollTo(0, 0);
-    intro.hidden = false;
-    intro.classList.remove('out', 'closing');
-    cuts.forEach(function (c) { c.classList.remove('on'); });
-    line.classList.remove('on');
-    openScene.classList.add('on');
-    t0 = performance.now();
-    tick();
-    // 0.0s title card, 0.6s to 2.6s five cuts at 0.4s, 2.6s bars close, 3.2s tagline on black, 3.7s bars open and the hero pops
-    cuts.forEach(function (c, i) {
-      at(600 + i * 400, function () {
-        openScene.classList.remove('on');
-        cuts.forEach(function (x) { x.classList.remove('on'); });
-        c.classList.add('on');
-      });
-    });
-    at(2600, function () { intro.classList.add('closing'); });
-    at(3200, function () { cuts.forEach(function (x) { x.classList.remove('on'); }); line.classList.add('on'); });
-    at(3700, finish);
-  }
-  document.getElementById('skip').addEventListener('click', finish);
-  document.getElementById('replay').addEventListener('click', function () {
-    try { sessionStorage.removeItem('nandil-intro'); } catch (e) {}
-    hero.removeAttribute('data-play');
-    run();
-  });
-
-  /* ---- photo slot (also feeds the menu image) ---- */
-  var photo = document.getElementById('photo');
-  var photoImg = document.getElementById('photoImg');
-  // 'arch' frames a normal photo (with its background). Change to 'cutout' once you have a transparent PNG, or 'auto' to let the page decide.
-  var PHOTO_STYLE = 'cutout';
-  function photoStyle(img) {
-    if (PHOTO_STYLE !== 'auto') return PHOTO_STYLE;
-    try {
-      var c = document.createElement('canvas'); c.width = 24; c.height = 24;
-      var g = c.getContext('2d'); g.drawImage(img, 0, 0, 24, 24);
-      var d = g.getImageData(0, 0, 24, 24).data, clear = 0;
-      for (var k = 3; k < d.length; k += 4) if (d[k] < 200) clear++;
-      return clear > 24 * 24 * 0.06 ? 'cutout' : 'arch';
-    } catch (e) { return 'arch'; }
-  }
-  function applyPhoto(url, img) {
-    var st = photoStyle(img);
-    photo.classList.toggle('arch', st === 'arch');
-    document.getElementById('menuArt').classList.toggle('cutout', st === 'cutout');
-    photoImg.src = url;
-    photo.classList.add('has');
-    document.getElementById('menuImg').src = url;
-  }
-  // Permanent photo: save your cut-out as img/me.png (or me.webp / me.jpg) and it loads on every visit.
-  var photoFiles = ['img/me.png', 'img/me.webp', 'img/me.jpg'];
-  (function tryPhoto(i) {
-    if (i >= photoFiles.length) return;
-    var probe = new Image();
-    probe.onload = function () { applyPhoto(photoFiles[i], probe); };
-    probe.onerror = function () { tryPhoto(i + 1); };
-    probe.src = photoFiles[i];
-  })(0);
-  // Quick preview only: picking a file here shows it for this visit and is not saved.
-  document.getElementById('photoInput').addEventListener('change', function (e) {
-    var f = e.target.files && e.target.files[0];
-    if (!f) return;
-    var u = URL.createObjectURL(f), im = new Image();
-    im.onload = function () { applyPhoto(u, im); };
-    im.src = u;
-  });
-
-  var seen = false;
-  try { seen = sessionStorage.getItem('nandil-intro') === '1'; } catch (e) {}
-  var startName = location.hash.slice(1);
-  if (reduce || seen) {
-    intro.hidden = true;
-    startHero();
-    if (names.indexOf(startName) > -1) setTimeout(function () { go(startName, true); }, 60);
-  } else {
-    run();
-    if (names.indexOf(startName) > -1) at(3800, function () { go(startName, true); });
-  }
-})();
-</script>
+        <span class="tag pop" style="--d:.4
